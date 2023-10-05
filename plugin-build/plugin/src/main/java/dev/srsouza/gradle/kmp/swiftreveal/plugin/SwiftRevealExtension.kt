@@ -14,15 +14,6 @@ abstract class SwiftRevealExtension @Inject constructor(
     project: Project
 ) : ExtensionAware {
     /**
-     * Source Kitten executable path.
-     *
-     * By default, it uses from: "/opt/homebrew/bin/sourcekitten"
-     */
-    val sourceKittenExecutablePath: Property<String> = objects.notNullProperty<String>().apply {
-        convention("/opt/homebrew/bin/sourcekitten")
-    }
-
-    /**
      * Where to output the `module.swift` file that represents the
      * kotlin ios source output as a swift module.
      *

@@ -54,9 +54,6 @@ abstract class SwiftRevealTask @Inject constructor(
     abstract val frameworkFileName: Property<String>
 
     @get:Input
-    abstract val sourceKittenExecutablePath: Property<String>
-
-    @get:Input
     abstract val outputModuleSwiftRepresentationFile: Property<File>
 
     @get:Internal

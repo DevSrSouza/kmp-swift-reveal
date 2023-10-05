@@ -60,7 +60,6 @@ internal fun Project.registerKotlinLinkTaskForSwiftRevealForModule(): TaskProvid
 
 internal fun Project.registerSwiftRevealForModule(
     outputModuleSwiftFileDirectory: Property<Directory>,
-    sourceKittenExecutablePath: Property<String>
 ): TaskProvider<SwiftRevealTask> {
     val linkTask = registerKotlinLinkTaskForSwiftRevealForModule()
     return registerTask<SwiftRevealTask>(MODULE_SWIFT_REVEAL_TASK_NAME) { task ->
@@ -68,7 +67,6 @@ internal fun Project.registerSwiftRevealForModule(
         task.enabled = revealFrameworkTarget.enabledOnCurrentHost
         task.destinationDir.set(layout.moduleGenerationOutputDir())
         task.outputModuleSwiftRepresentationFile.set(outputModuleSwiftFileDirectory.map { it.file("module.swift").asFile })
-        task.sourceKittenExecutablePath.set(sourceKittenExecutablePath)
 
         task.dependsOn(linkTask.name)
     }

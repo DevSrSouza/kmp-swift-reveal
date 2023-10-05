@@ -55,9 +55,6 @@ This project aims to fill this unknown gap before going to XCode and implement u
 
 ## How to use
 
-> Requires
-> [Source Kitten](https://github.com/jpsim/SourceKitten) to be installed: `brew install sourcekitten`
-
 - Add the plugin to your module build script
 ```kotlin
 plugins {
@@ -73,7 +70,6 @@ plugins {
 ## Configuring
 ```kotlin
 swiftReveal {
-    sourceKittenExecutablePath.set("your/sourcekitten/executable/path") // default: /opt/homebrew/bin/sourcekitten
     directoryForSwiftGeneratedSourceFromModule.set(layout.projectDirectory.dir("swift-reveal")) // default: build/kmp-swift-reveal/out/module/
 }
 ```
