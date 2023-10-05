@@ -4,7 +4,7 @@ plugins {
 }
 
 kotlin {
-    
+
     targetHierarchy.default()
     listOf(
         iosX64(),
@@ -15,7 +15,7 @@ kotlin {
 //            baseName = "Example"
 //        }
     }
-    
+
     sourceSets {
         targetHierarchy.default()
     }
