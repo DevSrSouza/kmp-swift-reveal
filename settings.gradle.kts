@@ -25,7 +25,7 @@ gradleEnterprise {
     }
 }
 
-rootProject.name = "kotlin-gradle-plugin-template"
+rootProject.name = "kmp-swift-reveal"
 
 include(":example")
 includeBuild("plugin-build")

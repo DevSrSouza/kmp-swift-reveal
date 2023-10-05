@@ -9,6 +9,8 @@ plugins {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(gradleApi())
+    compileOnly(libs.kgp)
+    implementation(libs.ktxSerialization)
 
     testImplementation(libs.junit)
 }
