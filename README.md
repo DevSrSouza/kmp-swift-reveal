@@ -48,6 +48,7 @@ class ExampleClassKt : KotlinBase {
 ## Motivation
 
 First motivation: When writing a Kotlin Multiplatform module targeting iOS is usually hard to know what to expect when going to Swift, with the time we can get a little better at this but we usually miss things.
+
 Second motivation: When working with iOS developers it usually much harder for then to predict what is the output of a Kotlin Multiplatform module. This tool can be hooked into the CI pipeline for example to show ahead of time what the iOS developer should expect.
 
 This project aims to fill this unknown gap before going to XCode and implement using new Kotlin Multiplatform code by generating a Swift representation of the output OBJC Header of your module.
@@ -81,6 +82,7 @@ swiftReveal {
 - [ ] Download Source Kitten tool and build if not available.
 - [ ] Support generate swift file from `binaries` configuration of the module.
 - [ ] More examples
+- [ ] CI usage examples
 
 ## Thanks
 
