@@ -56,7 +56,7 @@ This project aims to fill this unknown gap before going to XCode and implement u
 ## How to use
 
 > Requires
-> Source Kitten to be installed: ``
+> [Source Kitten](https://github.com/jpsim/SourceKitten) to be installed: `brew install sourcekitten`
 
 - Add the plugin to your module build script
 ```kotlin
