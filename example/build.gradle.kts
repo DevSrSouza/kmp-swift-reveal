@@ -5,10 +5,8 @@ plugins {
 
 kotlin {
 
-    targetHierarchy.default()
     listOf(
-        iosX64(),
-        iosArm64(),
+        ios(),
         iosSimulatorArm64()
     ).forEach {
 //        it.binaries.framework {
@@ -17,7 +15,10 @@ kotlin {
     }
 
     sourceSets {
-        targetHierarchy.default()
+        val iosMain by getting
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
+        }
     }
 }
 
