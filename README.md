@@ -75,7 +75,6 @@ swiftReveal {
 ```
 
 ## Roadmap
-- [ ] Download Source Kitten tool and build if not available.
 - [ ] Support generate swift file from `binaries` configuration of the module.
 - [ ] More examples
 - [ ] CI usage examples
