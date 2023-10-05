@@ -43,7 +43,7 @@ abstract class SwiftRevealTask @Inject constructor(
     private val execOperations: ExecOperations,
     private val projectLayout: ProjectLayout,
     private val providers: ProviderFactory
-) : DefaultTask() {
+) : AbstractSwiftRevealTask(objectFactory, execOperations, projectLayout, providers) {
     @get:OutputDirectory
     abstract val destinationDir: DirectoryProperty
 
@@ -71,22 +71,6 @@ abstract class SwiftRevealTask @Inject constructor(
         destinationDir.asFile.get().resolve(outFileName)
     }
 
-    @get:LocalState
-    protected val logsDir: Provider<Directory> = projectLayout.logOutputDir(name)
-
-    @get:Internal
-    val verbose: Property<Boolean> = objectFactory.notNullProperty<Boolean>().apply {
-        set(
-            providers.provider {
-                logger.isDebugEnabled || SwiftRevealProperties.isVerbose(providers).get()
-            }
-        )
-    }
-
-    @get:Internal
-    internal val runExternalTool: ExternalToolRunner
-        get() = ExternalToolRunner(verbose, logsDir, execOperations)
-
     init {
         destinationDir.convention(projectLayout.defaultGenerationOutputDir())
         frameworkFolder.convention(projectLayout.frameworkOutputDir())
@@ -110,13 +94,15 @@ abstract class SwiftRevealTask @Inject constructor(
         val frameworkAbsolutePath = frameworkFolder.asFile.absolutePath
         val xcodePath = retrieveXcodePath(runExternalTool)
         val frameworkName = frameworkFileName.get()
+        
+        val sourceKittenExecutable = project.sourceKittenExecutable.get().asFile
 
         // Generating Source Kitten Request File
         val sourceKittenRequestSource = buildSourceKittenRequestFileSource(xcodePath, frameworkAbsolutePath, frameworkName)
         sourceKittenRequestFile.writeText(sourceKittenRequestSource)
 
         // Requesting Source Kitten
-        requestSourceKitten(sourceKittenExecutablePath, runExternalTool, sourceKittenRequestFile, sourceKittenResultFile)
+        requestSourceKitten(sourceKittenExecutable, runExternalTool, sourceKittenRequestFile, sourceKittenResultFile)
 
         // getting and writing Swift Source
         val swiftModuleSource = retrieveModuleSwiftSource(sourceKittenResultFile)
@@ -149,14 +135,13 @@ fun buildSourceKittenRequestFileSource(xcodePath: String, absoluteFrameworkDir: 
 }
 
 internal fun requestSourceKitten(
-    sourceKittenExecutablePath: Property<String>,
+    sourceKittenExecutable: File,
     runExternalTool: ExternalToolRunner,
     requestFile: File,
     outputJsonFile: File
 ) {
-    val executable = sourceKittenExecutablePath.get()
     runExternalTool(
-        File(executable), // TODO: inject the installed source kitten
+        sourceKittenExecutable, // TODO: inject the installed source kitten
         listOf("request", "--yaml", requestFile.absolutePath),
         processStdout = { result ->
             outputJsonFile.writeText(result)

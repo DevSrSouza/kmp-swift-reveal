@@ -1,5 +1,6 @@
 package dev.srsouza.gradle.kmp.swiftreveal.plugin
 
+import dev.srsouza.gradle.kmp.swiftreveal.plugin.tasks.registerDownloadAndBuildSourceKitten
 import dev.srsouza.gradle.kmp.swiftreveal.plugin.tasks.registerSwiftRevealForModule
 import dev.srsouza.gradle.kmp.swiftreveal.plugin.tasks.registerSwiftRevealLifecycle
 import org.gradle.api.Plugin
@@ -13,6 +14,7 @@ abstract class SwiftRevealPlugin : Plugin<Project> {
         val extension = project.extensions.create(EXTENSION_NAME, SwiftRevealExtension::class.java, project)
 
         // Add a task that uses configuration from the extension object
+        val downloadInstallTask = project.registerDownloadAndBuildSourceKitten()
         val lifecycle = project.registerSwiftRevealLifecycle()
         val swiftRevealModule = project.registerSwiftRevealForModule(
             outputModuleSwiftFileDirectory = extension.directoryForSwiftGeneratedSourceFromModule,
@@ -21,6 +23,9 @@ abstract class SwiftRevealPlugin : Plugin<Project> {
 
         lifecycle.configure {
             it.dependsOn(swiftRevealModule.name)
+        }
+        swiftRevealModule.configure {
+            it.dependsOn(downloadInstallTask)
         }
     }
 }
