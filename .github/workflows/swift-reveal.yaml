@@ -1,4 +1,4 @@
-name: Pre Merge Checks
+name: Swift Reveal
 
 on:
   pull_request:
@@ -18,6 +18,7 @@ jobs:
       - name: Run Gradle tasks
         run: ./gradlew :example:swiftReveal
       - run: ls build/sourcekitten-0.34.1-src/.build
+        if: always()
 
       # TODO: publish comment in pull request
       - name: Publish Swift Reveal to Summary
