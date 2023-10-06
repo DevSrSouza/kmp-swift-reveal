@@ -1,0 +1,27 @@
+name: Pre Merge Checks
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  swiftReveal:
+    name: Swift Reveal
+    runs-on: macos-latest
+    if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+      - name: Cache Gradle Caches
+        uses: gradle/gradle-build-action@v2
+      - name: Run Gradle tasks
+        run: ./gradlew :example:swiftReveal
+
+      # TODO: publish comment in pull request
+      - name: Publish Swift Reveal to Summary
+        run: |
+          echo '```swift\n' >> $GITHUB_STEP_SUMMARY
+          cat example/swift-reveal/module.swift >> $GITHUB_STEP_SUMMARY
+          echo '\n```' >> $GITHUB_STEP_SUMMARY
+        if: success()
