@@ -17,7 +17,7 @@ abstract class SwiftRevealPlugin : Plugin<Project> {
         val downloadInstallTask = project.registerDownloadAndBuildSourceKitten()
         val lifecycle = project.registerSwiftRevealLifecycle()
         val swiftRevealModule = project.registerSwiftRevealForModule(
-            outputModuleSwiftFileDirectory = extension.directoryForSwiftGeneratedSourceFromModule,
+            outputModuleSwiftFileDirectory = extension.directoryForSwiftGeneratedSourceFromModule
         )
 
         lifecycle.configure {

@@ -24,7 +24,7 @@ abstract class AbstractSwiftRevealTask @Inject constructor(
 ) : DefaultTask() {
     @get:LocalState
     protected val logsDir: Provider<Directory> = projectLayout.logOutputDir(name)
-    
+
     @get:Internal
     val verbose: Property<Boolean> = objectFactory.notNullProperty<Boolean>().apply {
         set(
@@ -33,7 +33,7 @@ abstract class AbstractSwiftRevealTask @Inject constructor(
             }
         )
     }
-    
+
     @get:Internal
     internal val runExternalTool: ExternalToolRunner
         get() = ExternalToolRunner(verbose, logsDir, execOperations)

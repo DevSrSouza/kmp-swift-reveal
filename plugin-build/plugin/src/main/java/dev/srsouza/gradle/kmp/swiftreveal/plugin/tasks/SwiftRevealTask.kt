@@ -1,20 +1,15 @@
 package dev.srsouza.gradle.kmp.swiftreveal.plugin.tasks
 
-import dev.srsouza.gradle.kmp.swiftreveal.plugin.SwiftRevealProperties
 import dev.srsouza.gradle.kmp.swiftreveal.plugin.utils.ExternalToolRunner
 import dev.srsouza.gradle.kmp.swiftreveal.plugin.utils.MacUtils
 import dev.srsouza.gradle.kmp.swiftreveal.plugin.utils.defaultGenerationOutputDir
 import dev.srsouza.gradle.kmp.swiftreveal.plugin.utils.frameworkOutputDir
-import dev.srsouza.gradle.kmp.swiftreveal.plugin.utils.logOutputDir
-import dev.srsouza.gradle.kmp.swiftreveal.plugin.utils.notNullProperty
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
-import org.gradle.api.DefaultTask
-import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.model.ObjectFactory
@@ -24,7 +19,6 @@ import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.LocalState
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecOperations
@@ -84,18 +78,23 @@ abstract class SwiftRevealTask @Inject constructor(
     fun generateSwiftRepresentation() {
         val sourceKittenRequestFile = outputSourceKittenRequestFile.get().apply { ensureParentDirsCreated() }
         val sourceKittenResultFile = outputSourceKittenResultFile.get().apply { ensureParentDirsCreated() }
-        val moduleSwiftRepresentationFile = outputModuleSwiftRepresentationFile.get().apply { ensureParentDirsCreated() }
+        val moduleSwiftRepresentationFile = outputModuleSwiftRepresentationFile.get()
+            .apply { ensureParentDirsCreated() }
 
         val frameworkFolder = frameworkFolder.get()
 
         val frameworkAbsolutePath = frameworkFolder.asFile.absolutePath
         val xcodePath = retrieveXcodePath(runExternalTool)
         val frameworkName = frameworkFileName.get()
-        
+
         val sourceKittenExecutable = project.sourceKittenExecutable.get().asFile
 
         // Generating Source Kitten Request File
-        val sourceKittenRequestSource = buildSourceKittenRequestFileSource(xcodePath, frameworkAbsolutePath, frameworkName)
+        val sourceKittenRequestSource = buildSourceKittenRequestFileSource(
+            xcodePath,
+            frameworkAbsolutePath,
+            frameworkName
+        )
         sourceKittenRequestFile.writeText(sourceKittenRequestSource)
 
         // Requesting Source Kitten

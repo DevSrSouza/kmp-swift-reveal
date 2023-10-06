@@ -1,7 +1,6 @@
 package dev.srsouza.gradle.kmp.swiftreveal.plugin
 
 import dev.srsouza.gradle.kmp.swiftreveal.plugin.utils.moduleGenerationOutputDir
-import dev.srsouza.gradle.kmp.swiftreveal.plugin.utils.notNullProperty
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
 import org.gradle.api.model.ObjectFactory

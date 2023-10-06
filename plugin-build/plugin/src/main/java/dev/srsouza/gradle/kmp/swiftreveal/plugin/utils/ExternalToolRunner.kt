@@ -50,6 +50,7 @@ internal class ExternalToolRunner(
         OnlyWhenVerbose
     }
 
+    @Suppress("LongParameterList", "SpreadOperator")
     operator fun invoke(
         tool: File,
         args: Collection<String>,

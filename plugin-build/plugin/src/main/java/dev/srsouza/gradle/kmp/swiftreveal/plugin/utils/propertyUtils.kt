@@ -13,6 +13,7 @@ internal inline fun <reified T : Any> ObjectFactory.notNullProperty(): Property<
 internal inline fun <reified T : Any> ObjectFactory.nullableProperty(): Property<T?> =
     property(T::class.java) as Property<T?>
 
+@Suppress("SwallowedException")
 internal fun Provider<String?>.forUseAtConfigurationTimeSafe(): Provider<String?> =
     try {
         forUseAtConfigurationTime()

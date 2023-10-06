@@ -1,3 +1,4 @@
+// ktlint-disable filename
 package dev.srsouza.gradle.kmp.swiftreveal.plugin.tasks
 
 import dev.srsouza.gradle.kmp.swiftreveal.plugin.utils.MacUtils
@@ -6,7 +7,8 @@ import dev.srsouza.gradle.kmp.swiftreveal.plugin.utils.registerTask
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
 
-internal val Project.sourceKittenExecutable get() = sourceKittenSrc.map { it.file(".build/arm64-apple-macosx/debug/sourcekitten") }
+internal val Project.sourceKittenExecutable
+    get() = sourceKittenSrc.map { it.file(".build/arm64-apple-macosx/debug/sourcekitten") }
 
 private const val SOURCE_KITTEN_GIT = "https://github.com/jpsim/SourceKitten.git"
 private const val SOURCE_KITTEN_TAG = "0.34.1"
@@ -22,8 +24,10 @@ internal fun Project.registerDownloadAndBuildSourceKitten(): TaskProvider<Abstra
                 UnixUtils.git,
                 listOf(
                     "clone",
-                    "--depth", "1",
-                    "--branch", SOURCE_KITTEN_TAG,
+                    "--depth",
+                    "1",
+                    "--branch",
+                    SOURCE_KITTEN_TAG,
                     SOURCE_KITTEN_GIT,
                     sourceKittenSrcFile.absolutePath
                 )

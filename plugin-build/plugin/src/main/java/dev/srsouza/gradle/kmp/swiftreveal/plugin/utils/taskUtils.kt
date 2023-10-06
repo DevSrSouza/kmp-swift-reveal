@@ -12,6 +12,7 @@ internal inline fun <reified T : Task> Project.registerTask(
 ): TaskProvider<T> =
     this@registerTask.registerTask(name, T::class.java, args, body)
 
+@Suppress("SpreadOperator")
 internal fun <T : Task> Project.registerTask(
     name: String,
     type: Class<T>,

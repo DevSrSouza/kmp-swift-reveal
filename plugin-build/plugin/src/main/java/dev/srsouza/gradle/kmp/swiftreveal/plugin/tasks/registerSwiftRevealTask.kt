@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.gradle.targets.native.tasks.artifact.KotlinNativeLin
 
 // TODO: what we want are two tasks -> `swiftRevealForModule`, creates a link.
 //  `swiftRevealForBinary` that uses the link framework of this module if there is any
-// for binary comes with all configurations in the `framework {}` block, etc
+//  for binary comes with all configurations in the `framework {}` block, etc
 
 private const val LINK_MODULE_SWIFT_REVEAL_TASK_NAME = "linkIosForModuleSwiftReveal"
 private const val MODULE_SWIFT_REVEAL_TASK_NAME = "swiftRevealForModule"
@@ -59,14 +59,16 @@ internal fun Project.registerKotlinLinkTaskForSwiftRevealForModule(): TaskProvid
 }
 
 internal fun Project.registerSwiftRevealForModule(
-    outputModuleSwiftFileDirectory: Property<Directory>,
+    outputModuleSwiftFileDirectory: Property<Directory>
 ): TaskProvider<SwiftRevealTask> {
     val linkTask = registerKotlinLinkTaskForSwiftRevealForModule()
     return registerTask<SwiftRevealTask>(MODULE_SWIFT_REVEAL_TASK_NAME) { task ->
         task.description = "Generate a Swift file revealing the Kotlin Module"
         task.enabled = revealFrameworkTarget.enabledOnCurrentHost
         task.destinationDir.set(layout.moduleGenerationOutputDir())
-        task.outputModuleSwiftRepresentationFile.set(outputModuleSwiftFileDirectory.map { it.file("module.swift").asFile })
+        task.outputModuleSwiftRepresentationFile.set(
+            outputModuleSwiftFileDirectory.map { it.file("module.swift").asFile }
+        )
 
         task.dependsOn(linkTask.name)
     }
