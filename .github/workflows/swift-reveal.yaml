@@ -23,10 +23,7 @@ jobs:
       - name: Publish Swift Reveal to Summary
         id: build_swift_reveal_comment
         run: |
-          echo 'swiftreveal="```swift' >> $GITHUB_OUTPUT
-          cat example/swift-reveal/module.swift >> $GITHUB_OUTPUT
-          echo $'\n' >> $GITHUB_OUTPUT
-          echo '```"' >> $GITHUB_OUTPUT
+          echo "swiftreveal=$(cat example/swift-reveal/module.swift)" >> $GITHUB_OUTPUT
         if: success()
       - name: maintain-comment
         uses: actions-cool/maintain-one-comment@v3
@@ -34,6 +31,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
-            ${{join(steps.build_swift_reveal_comment.outputs.*, '\n')}}
+            ${{ steps.build_swift_reveal_comment.outputs.swiftreveal }}
           body-include: '<!-- Created by actions-cool/maintain-one-comment -->'
 
