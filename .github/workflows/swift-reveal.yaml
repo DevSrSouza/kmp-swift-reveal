@@ -24,7 +24,10 @@ jobs:
         id: build_swift_reveal_comment
         run: |
           FILE_CONTENT=$(cat example/swift-reveal/module.swift)
-          echo "content<<$FILE_CONTENT" >> $GITHUB_OUTPUT
+          delimiter="$(openssl rand -hex 8)"
+          echo "content<<${delimiter}" >> "${GITHUB_OUTPUT}"
+          echo "$FILE_CONTENT" >> "${GITHUB_OUTPUT}"
+          echo "${delimiter}" >> "${GITHUB_OUTPUT}"
         if: success()
       - name: maintain-comment
         uses: actions-cool/maintain-one-comment@v3
