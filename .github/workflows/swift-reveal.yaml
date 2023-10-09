@@ -39,5 +39,5 @@ jobs:
             ```swift
             ${{ steps.build_swift_reveal_comment.outputs.content }}
             ```
-          body-include: '<!-- Created by actions-cool/maintain-one-comment -->'
+          body-include: '<!-- Swift Reveal Comment -->'
 
