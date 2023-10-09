@@ -17,20 +17,19 @@ jobs:
         uses: gradle/gradle-build-action@v2
       - name: Run Gradle tasks
         run: ./gradlew :example:swiftReveal
-      - run: ls build/sourcekitten-0.34.1-src/.build
-        if: always()
 
       - name: Publish Swift Reveal to Summary
         id: build_swift_reveal_comment
         run: |
-          echo "swiftreveal=$(cat example/swift-reveal/module.swift)" >> $GITHUB_OUTPUT
+          FILE_CONTENT=$(cat example/swift-reveal/module.swift)
+          echo "::set-output name=content::$FILE_CONTENT"
         if: success()
       - name: maintain-comment
         uses: actions-cool/maintain-one-comment@v3
-
+        if: success()
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
-            ${{ steps.build_swift_reveal_comment.outputs.swiftreveal }}
+            ${{ steps.build_swift_reveal_comment.outputs.content }}
           body-include: '<!-- Created by actions-cool/maintain-one-comment -->'
 
