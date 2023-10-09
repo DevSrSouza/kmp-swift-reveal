@@ -22,9 +22,19 @@ jobs:
 
       # TODO: publish comment in pull request
       - name: Publish Swift Reveal to Summary
+        id: build_swift_reveal_comment
         run: |
-          echo '```swift' >> $GITHUB_STEP_SUMMARY
-          cat example/swift-reveal/module.swift >> $GITHUB_STEP_SUMMARY
-          echo $'\n' >> output.log
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo '```swift' >> $GITHUB_OUTPUT
+          cat example/swift-reveal/module.swift >> $GITHUB_OUTPUT
+          echo $'\n' >> $GITHUB_OUTPUT
+          echo '```' >> $GITHUB_OUTPUT
         if: success()
+      - name: maintain-comment
+        uses: actions-cool/maintain-one-comment@v3
+
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            ${{join(steps.build_swift_reveal_comment.outputs.*, '\n')}}
+          body-include: '<!-- Created by actions-cool/maintain-one-comment -->'
+
