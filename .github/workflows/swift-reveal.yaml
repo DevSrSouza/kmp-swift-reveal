@@ -35,6 +35,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
+            ```swift
             ${{ steps.build_swift_reveal_comment.outputs.content }}
+            ```
           body-include: '<!-- Created by actions-cool/maintain-one-comment -->'
 
