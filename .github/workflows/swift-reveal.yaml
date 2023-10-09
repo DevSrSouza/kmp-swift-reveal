@@ -25,5 +25,6 @@ jobs:
         run: |
           echo '```swift' >> $GITHUB_STEP_SUMMARY
           cat example/swift-reveal/module.swift >> $GITHUB_STEP_SUMMARY
+          echo $'\n' >> output.log
           echo '```' >> $GITHUB_STEP_SUMMARY
         if: success()
