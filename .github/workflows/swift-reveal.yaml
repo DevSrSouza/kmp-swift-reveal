@@ -35,6 +35,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
+            ## Swift Reveal result
             ```swift
             ${{ steps.build_swift_reveal_comment.outputs.content }}
             ```
