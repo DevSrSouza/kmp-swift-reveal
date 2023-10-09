@@ -79,6 +79,7 @@ swiftReveal {
 - [ ] More examples
 - [ ] CI usage examples
 - [ ] Filter classes and definitions from module dependencies.
+- [ ] Validate and support [SKIE](https://github.com/touchlab/SKIE)
 
 ## Thanks
 

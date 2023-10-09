@@ -23,7 +23,7 @@ jobs:
       # TODO: publish comment in pull request
       - name: Publish Swift Reveal to Summary
         run: |
-          echo '```swift\n' >> $GITHUB_STEP_SUMMARY
+          echo '```swift' >> $GITHUB_STEP_SUMMARY
           cat example/swift-reveal/module.swift >> $GITHUB_STEP_SUMMARY
-          echo '\n```' >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
         if: success()
