@@ -74,11 +74,47 @@ swiftReveal {
 }
 ```
 
+## Integration example
+You can do a bunch of custom integration with the generated file to make it visible to the iOS Developers the changes
+that are being taking place in the modules that expose code to Swift.
+
+A simple **CI** example would be this Github Action Jobs
+
+```yaml
+  # Put the Swift generated file to the `GITHUB_OUTPUT` of the Step
+  - name: Get Swift Reveal Output
+    id: build_swift_reveal_comment
+    run: |
+      FILE_CONTENT=$(cat example/swift-reveal/module.swift)
+      delimiter="$(openssl rand -hex 8)"
+      echo "content<<${delimiter}" >> "${GITHUB_OUTPUT}"
+      echo "$FILE_CONTENT" >> "${GITHUB_OUTPUT}"
+      echo "${delimiter}" >> "${GITHUB_OUTPUT}"
+    if: success()
+  # Comment the Swift file to the Github PR using 'maintain-one-comment' Action
+  - name: Swift Reveal Comment
+    uses: actions-cool/maintain-one-comment@v3
+    if: success()
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+      body: |
+        ## Swift Reveal result
+        ```swift
+        ${{ steps.build_swift_reveal_comment.outputs.content }}
+        ```
+      body-include: '<!-- Swift Reveal Comment -->'
+```
+
+<image width="700" src="https://github.com/DevSrSouza/kmp-swift-reveal/assets/29736164/2e5ed7ca-249b-4dc3-90d4-be1ce404bff6" />
+
+You can get the full example Github Action Workflow [here](https://github.com/DevSrSouza/kmp-swift-reveal/blob/main/.github/workflows/swift-reveal.yaml).
+
 ## Roadmap
 - [ ] Support generate swift file from `binaries` configuration of the module.
 - [ ] More examples
 - [ ] CI usage examples
 - [ ] Filter classes and definitions from module dependencies.
+- [ ] Validate and support [SKIE](https://github.com/touchlab/SKIE)
 
 ## Thanks
 

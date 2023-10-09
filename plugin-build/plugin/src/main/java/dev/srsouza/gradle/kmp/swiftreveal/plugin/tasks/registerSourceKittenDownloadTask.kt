@@ -7,8 +7,10 @@ import dev.srsouza.gradle.kmp.swiftreveal.plugin.utils.registerTask
 import org.gradle.api.Project
 import org.gradle.api.tasks.TaskProvider
 
-internal val Project.sourceKittenExecutable
+internal val Project.sourceKittenExecutableArm
     get() = sourceKittenSrc.map { it.file(".build/arm64-apple-macosx/debug/sourcekitten") }
+internal val Project.sourceKittenExecutableX64
+    get() = sourceKittenSrc.map { it.file(".build/x86_64-apple-macosx/debug/sourcekitten") }
 
 private const val SOURCE_KITTEN_GIT = "https://github.com/jpsim/SourceKitten.git"
 private const val SOURCE_KITTEN_TAG = "0.34.1"
@@ -16,7 +18,9 @@ private val Project.sourceKittenSrc get() = rootProject.layout.buildDirectory.di
 
 internal fun Project.registerDownloadAndBuildSourceKitten(): TaskProvider<AbstractSwiftRevealTask> {
     return registerTask<AbstractSwiftRevealTask>("downloadAndBuildSourceKitten") { task ->
-        task.onlyIf { !sourceKittenExecutable.get().asFile.exists() }
+        task.onlyIf {
+            (!sourceKittenExecutableArm.get().asFile.exists()) && (!sourceKittenExecutableX64.get().asFile.exists())
+        }
         task.doLast {
             val sourceKittenSrcFile = sourceKittenSrc.get().asFile
             sourceKittenSrcFile.deleteRecursively()

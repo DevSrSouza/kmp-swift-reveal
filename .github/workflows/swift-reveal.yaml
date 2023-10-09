@@ -1,0 +1,43 @@
+name: Swift Reveal
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  swiftReveal:
+    name: Swift Reveal
+    runs-on: macos-latest
+    if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
+    permissions:
+      pull-requests: write # requires because sometime have to work on PR comments
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+      - name: Cache Gradle Caches
+        uses: gradle/gradle-build-action@v2
+      - name: Run Gradle tasks
+        run: ./gradlew :example:swiftReveal
+
+      - name: Publish Swift Reveal to Summary
+        id: build_swift_reveal_comment
+        run: |
+          FILE_CONTENT=$(cat example/swift-reveal/module.swift)
+          delimiter="$(openssl rand -hex 8)"
+          echo "content<<${delimiter}" >> "${GITHUB_OUTPUT}"
+          echo "$FILE_CONTENT" >> "${GITHUB_OUTPUT}"
+          echo "${delimiter}" >> "${GITHUB_OUTPUT}"
+        if: success()
+      - name: maintain-comment
+        uses: actions-cool/maintain-one-comment@v3
+        if: success()
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            ## Swift Reveal result
+            ```swift
+            ${{ steps.build_swift_reveal_comment.outputs.content }}
+            ```
+          body-include: '<!-- Swift Reveal Comment -->'
+

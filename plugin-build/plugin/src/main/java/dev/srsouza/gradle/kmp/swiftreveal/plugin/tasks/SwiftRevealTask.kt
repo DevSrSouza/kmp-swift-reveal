@@ -87,7 +87,8 @@ abstract class SwiftRevealTask @Inject constructor(
         val xcodePath = retrieveXcodePath(runExternalTool)
         val frameworkName = frameworkFileName.get()
 
-        val sourceKittenExecutable = project.sourceKittenExecutable.get().asFile
+        val sourceKittenExecutable = project.sourceKittenExecutableArm.get().asFile.takeIf { it.exists() }
+            ?: project.sourceKittenExecutableX64.get().asFile
 
         // Generating Source Kitten Request File
         val sourceKittenRequestSource = buildSourceKittenRequestFileSource(
