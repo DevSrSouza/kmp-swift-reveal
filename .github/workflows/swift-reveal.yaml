@@ -20,14 +20,13 @@ jobs:
       - run: ls build/sourcekitten-0.34.1-src/.build
         if: always()
 
-      # TODO: publish comment in pull request
       - name: Publish Swift Reveal to Summary
         id: build_swift_reveal_comment
         run: |
-          echo '```swift' >> $GITHUB_OUTPUT
+          echo 'swiftreveal="```swift' >> $GITHUB_OUTPUT
           cat example/swift-reveal/module.swift >> $GITHUB_OUTPUT
           echo $'\n' >> $GITHUB_OUTPUT
-          echo '```' >> $GITHUB_OUTPUT
+          echo '```"' >> $GITHUB_OUTPUT
         if: success()
       - name: maintain-comment
         uses: actions-cool/maintain-one-comment@v3
