@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
       - name: Cache Gradle Caches
         uses: gradle/gradle-build-action@v2
       - name: Run Gradle tasks
