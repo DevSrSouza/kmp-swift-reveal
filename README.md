@@ -112,7 +112,7 @@ You can get the full example Github Action Workflow [here](https://github.com/De
 ## Roadmap
 - [ ] Support generate swift file from `binaries` configuration of the module.
 - [ ] More examples
-- [ ] CI usage examples
+- [X] CI usage examples
 - [ ] Filter classes and definitions from module dependencies.
 - [ ] Validate and support [SKIE](https://github.com/touchlab/SKIE)
 
