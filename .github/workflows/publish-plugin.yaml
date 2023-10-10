@@ -22,5 +22,5 @@ jobs:
         run: |
           NEW_VERSION=$(echo "${GITHUB_REF}" | cut -d "/" -f3)
           echo "New version: ${NEW_VERSION}"
-          ./gradlew -Pversion=${NEW_VERSION} --project-dir plugin-build setupPluginUploadFromEnvironment publishPlugins
+          ./gradlew -PVERSION=${NEW_VERSION} --project-dir plugin-build setupPluginUploadFromEnvironment publishPlugins
         if: success()
