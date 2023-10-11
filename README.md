@@ -66,7 +66,7 @@ This project aims to fill this unknown gap before going to XCode and implement u
 ```kotlin
 plugins {
     ...
-    id("dev.srsouza.gradle.kmp-swift-reveal") version "0.1.0"
+    id("dev.srsouza.gradle.kmp-swift-reveal") version "0.1.1"
 }
 ```
 
