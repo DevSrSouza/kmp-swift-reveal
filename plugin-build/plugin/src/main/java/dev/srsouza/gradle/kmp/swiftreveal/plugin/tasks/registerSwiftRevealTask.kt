@@ -24,7 +24,7 @@ private const val LINK_MODULE_SWIFT_REVEAL_TASK_NAME = "linkIosForModuleSwiftRev
 private const val MODULE_SWIFT_REVEAL_TASK_NAME = "swiftRevealForModule"
 
 internal fun Project.defaultFrameworkBaseNameForModule(): String {
-    return name
+    return name.replace('-', '_')
 }
 
 internal fun Project.registerKotlinLinkTaskForSwiftRevealForModule(): TaskProvider<KotlinNativeLinkArtifactTask> {
