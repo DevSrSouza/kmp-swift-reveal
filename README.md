@@ -45,6 +45,13 @@ class ExampleClassKt : KotlinBase {
 }
 ```
 
+## Roadmap
+- [ ] Support generate swift file from `binaries` configuration of the module.
+- [ ] More examples
+- [X] CI usage examples
+- [ ] Filter classes and definitions from module dependencies.
+- [ ] Validate and support [SKIE](https://github.com/touchlab/SKIE)
+
 ## Motivation
 
 First motivation: When writing a Kotlin Multiplatform module targeting iOS is usually hard to know what to expect when going to Swift, with the time we can get a little better at this but we usually miss things.
@@ -59,7 +66,7 @@ This project aims to fill this unknown gap before going to XCode and implement u
 ```kotlin
 plugins {
     ...
-    id("dev.srsouza.gradle.kmp-swift-reveal") version "TODO"
+    id("dev.srsouza.gradle.kmp-swift-reveal") version "0.1.0"
 }
 ```
 
@@ -73,6 +80,12 @@ swiftReveal {
     directoryForSwiftGeneratedSourceFromModule.set(layout.projectDirectory.dir("swift-reveal")) // default: build/kmp-swift-reveal/out/module/
 }
 ```
+
+## How it works
+
+The project was inspired by usage of [Source Kitten](https://github.com/jpsim/SourceKitten/) in the talk [Kotlin/Multiplatform for iOS developers : state & future by Salomon Brys](https://www.youtube.com/watch?v=j-zEAMcMcjA) at Kotlin Conf 23.
+
+Basically, the projects creates a Source Kitten Request for a Swift source code and filter the source code with only your module declarations.
 
 ## Integration example
 You can do a bunch of custom integration with the generated file to make it visible to the iOS Developers the changes
@@ -108,13 +121,6 @@ A simple **CI** example would be this Github Action Jobs
 <image width="700" src="https://github.com/DevSrSouza/kmp-swift-reveal/assets/29736164/2e5ed7ca-249b-4dc3-90d4-be1ce404bff6" />
 
 You can get the full example Github Action Workflow [here](https://github.com/DevSrSouza/kmp-swift-reveal/blob/main/.github/workflows/swift-reveal.yaml).
-
-## Roadmap
-- [ ] Support generate swift file from `binaries` configuration of the module.
-- [ ] More examples
-- [X] CI usage examples
-- [ ] Filter classes and definitions from module dependencies.
-- [ ] Validate and support [SKIE](https://github.com/touchlab/SKIE)
 
 ## Thanks
 
