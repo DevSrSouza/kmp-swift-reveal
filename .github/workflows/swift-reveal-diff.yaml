@@ -1,0 +1,75 @@
+name: Swift Reveal Diff
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  swiftReveal:
+    name: Swift Reveal Diff
+    runs-on: macos-latest
+    if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
+    permissions:
+      pull-requests: write # requires because sometime have to work on PR comments
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4
+        with:
+          lfs: true
+          fetch-depth: 0
+
+      - name: Cache Gradle Caches
+        uses: gradle/gradle-build-action@v2
+
+      - name: Swift Reveal before changes
+        run: |
+          git checkout refs/remotes/origin/${{ github.head_ref }}
+          ./gradlew :example:swiftReveal
+
+      - name: Collect swift reveal before changes
+        id: collected-swift-reveal-before-changes
+        run: |
+          FILE_CONTENT=$(cat example/swift-reveal/module.swift)
+          delimiter="$(openssl rand -hex 8)"
+          echo "content<<${delimiter}" >> "${GITHUB_OUTPUT}"
+          echo "$FILE_CONTENT" >> "${GITHUB_OUTPUT}"
+          echo "${delimiter}" >> "${GITHUB_OUTPUT}"
+
+      - name: Swift Reveal after changes
+        run: |
+          git checkout refs/remotes/origin/${{ github.base_ref }}
+          ./gradlew :example:swiftReveal
+
+      - name: Collect swift reveal after changes
+        id: collected-swift-reveal-after-changes
+        run: |
+          FILE_CONTENT=$(cat example/swift-reveal/module.swift)
+          delimiter="$(openssl rand -hex 8)"
+          echo "content<<${delimiter}" >> "${GITHUB_OUTPUT}"
+          echo "$FILE_CONTENT" >> "${GITHUB_OUTPUT}"
+          echo "${delimiter}" >> "${GITHUB_OUTPUT}"
+
+      - name: Diff SwiftReveal
+        id: diff-swiftreveal
+        run: |
+          echo "${{ steps.collected-swift-reveal-before-changes.outputs.content }}" >> previous.swift
+          echo "${{ steps.collected-swift-reveal-after-changes.outputs.content }}" >> new.swift
+          delimiter="$(openssl rand -hex 8)"
+          FILE_CONTENT=$(git diff --no-index new.swift previous.swift || true)
+          echo "content<<${delimiter}" >> "${GITHUB_OUTPUT}"
+          echo "$FILE_CONTENT" >> "${GITHUB_OUTPUT}"
+          echo "${delimiter}" >> "${GITHUB_OUTPUT}"
+        if: success()
+
+      - name: maintain-comment
+        uses: actions-cool/maintain-one-comment@v3
+        if: success()
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            ## Swift Reveal diffing
+            ```diff
+            ${{ steps.diff-swiftreveal.outputs.content }}
+            ```
+          body-include: '<!-- Swift Reveal Diff Comment -->'
