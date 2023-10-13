@@ -24,7 +24,7 @@ jobs:
 
       - name: Swift Reveal before changes
         run: |
-          git checkout refs/remotes/origin/${{ github.head_ref }}
+          git checkout refs/remotes/origin/${{ github.base_ref }}
           ./gradlew :example:swiftReveal
 
       - name: Collect swift reveal before changes
@@ -38,7 +38,7 @@ jobs:
 
       - name: Swift Reveal after changes
         run: |
-          git checkout refs/remotes/origin/${{ github.base_ref }}
+          git checkout refs/remotes/origin/${{ github.head_ref }}
           ./gradlew :example:swiftReveal
 
       - name: Collect swift reveal after changes
@@ -56,7 +56,7 @@ jobs:
           echo "${{ steps.collected-swift-reveal-before-changes.outputs.content }}" >> previous.swift
           echo "${{ steps.collected-swift-reveal-after-changes.outputs.content }}" >> new.swift
           delimiter="$(openssl rand -hex 8)"
-          FILE_CONTENT=$(git diff --no-index new.swift previous.swift || true)
+          FILE_CONTENT=$(git diff --no-index previous.swift new.swift || true)
           echo "content<<${delimiter}" >> "${GITHUB_OUTPUT}"
           echo "$FILE_CONTENT" >> "${GITHUB_OUTPUT}"
           echo "${delimiter}" >> "${GITHUB_OUTPUT}"
